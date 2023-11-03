@@ -240,7 +240,8 @@ class _CalendarMonthState extends State<_CalendarMonth> {
                               child: Material(
                                 color: _onClickedDateTime == current
                                     ? primaryColor
-                                    : current.month == now.month &&
+                                    : current.year == now.year &&
+                                            current.month == now.month &&
                                             current.month == showMonth &&
                                             current.day == now.day
                                         ? currentMonthColor.withOpacity(0.1)
@@ -274,7 +275,7 @@ class _CalendarMonthState extends State<_CalendarMonth> {
                                           : currentIndex % 7 < 5
                                               ? iconColor
                                               : primaryColor,
-                                      fontSize: 22,
+                                      fontSize: 24,
                                     ),
                                   ),
                                 ),
