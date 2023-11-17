@@ -14,6 +14,7 @@ class PieChartWidget extends StatefulWidget {
 
 class PieChart2State extends State {
   int touchedIndex = -1;
+  int touched2Index = -1;
 
   List<PieChartSectionData> showingSections() {
     return List.generate(
@@ -78,6 +79,54 @@ class PieChart2State extends State {
     );
   }
 
+  final data = [
+    {
+      "value": 80,
+      "title": "40%",
+    },
+    {
+      "value": 60,
+      "title": "30%",
+    },
+    {
+      "value": 30,
+      "title": "15%",
+    },
+    {
+      "value": 30,
+      "title": "15%",
+    },
+  ];
+
+  List<PieChartSectionData> showing2Sections() {
+    return List.generate(
+      data.length,
+      (i) {
+        final isTouched = i == touched2Index;
+        final fontSize = isTouched ? 22.0 : 16.0;
+        final radius = isTouched ? 50.0 : 40.0;
+
+        return PieChartSectionData(
+          color: i == 0
+              ? Colors.blue
+              : i == 1
+                  ? Colors.red
+                  : i == 2
+                      ? Colors.purple
+                      : Colors.green,
+          value: data[i]["value"] as double,
+          title: data[i]["title"] as String,
+          radius: radius,
+          titleStyle: TextStyle(
+            fontSize: fontSize,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // debugPrint("$touchedIndex");
@@ -103,33 +152,48 @@ class PieChart2State extends State {
                     });
                   },
                 ),
-                sectionsSpace: 10,
+                sectionsSpace: 5,
                 centerSpaceRadius: 90,
                 sections: showingSections(),
               ),
             ),
           ),
           Expanded(
-            child: PieChart(
-              PieChartData(
-                pieTouchData: PieTouchData(
-                  touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                    setState(() {
-                      if (!event.isInterestedForInteractions ||
-                          pieTouchResponse == null ||
-                          pieTouchResponse.touchedSection == null) {
-                        touchedIndex = -1;
-                        return;
-                      }
-                      touchedIndex =
-                          pieTouchResponse.touchedSection!.touchedSectionIndex;
-                    });
-                  },
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                PieChart(
+                  PieChartData(
+                    pieTouchData: PieTouchData(
+                      touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                        setState(() {
+                          if (!event.isInterestedForInteractions ||
+                              pieTouchResponse == null ||
+                              pieTouchResponse.touchedSection == null) {
+                            touched2Index = -1;
+                            return;
+                          }
+                          touched2Index = pieTouchResponse
+                              .touchedSection!.touchedSectionIndex;
+                        });
+                      },
+                    ),
+                    sectionsSpace: 5,
+                    centerSpaceRadius: 90,
+                    sections: showing2Sections(),
+                  ),
                 ),
-                sectionsSpace: 10,
-                centerSpaceRadius: 90,
-                sections: showingSections(),
-              ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    touched2Index < 0
+                        ? const SizedBox.shrink()
+                        : Text(
+                            '${data[touched2Index]["value"]} tickets (${data[touched2Index]["title"]})'),
+                    const Text("Total 200 tickets"),
+                  ],
+                ),
+              ],
             ),
           ),
         ],
