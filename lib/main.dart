@@ -12,6 +12,8 @@ const double kHPadding = 16;
 const double kVPadding = 10;
 const double buttonCorner = 10;
 const double buttonHeight = 45;
+const Color cardColor = Colors.white;
+const Color primaryColor = Colors.orangeAccent;
 
 void main() {
   initializeDateFormatting('km');
@@ -43,6 +45,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   DateTime? dateTime;
+  static const List<String> _statuses = [
+    'PENDING',
+    'PROCESSING',
+    'SUCCESS',
+    'FAIL'
+  ];
+  String _status = _statuses.first;
+
   @override
   Widget build(BuildContext context) {
     // debugPrint(
@@ -51,112 +61,248 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         backgroundColor: scaffoldColor,
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextButton(
-              onPressed: () => showDialog(
-                context: context,
-                builder: (dialogContext) => TomorrowDatePicker(
-                  startDateTime: dateTime,
-                  onChanged: (dt) => setState(() => dateTime = dt),
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.all(kHPadding),
+                // padding: const EdgeInsets.all(kHPadding),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
                 ),
-              ),
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                alignment: Alignment.center,
-                child: Text(
-                  dateTime == null
-                      ? "Date Picker"
-                      : DateFormat('d/M/y').format(dateTime!),
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const SearchResult()),
-              ),
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                alignment: Alignment.center,
-                child: const Text("Ticket Result Screen"),
-              ),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const TicketDashboard())),
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                alignment: Alignment.center,
-                child: const Text("Web Ticket Dashboard"),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Container(
-                    height: buttonHeight,
-                    decoration: const BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.horizontal(
-                        left: Radius.circular(buttonCorner + 1),
-                      ),
-                    ),
-                    padding: const EdgeInsets.only(left: 1, top: 1, bottom: 1),
-                    child: Container(
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
                       padding: const EdgeInsets.symmetric(
                         horizontal: kHPadding,
+                        vertical: kVPadding,
                       ),
                       decoration: const BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.horizontal(
-                          left: Radius.circular(buttonCorner),
+                        color: cardColor,
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(15),
+                        ),
+                        gradient: LinearGradient(
+                          colors: [
+                            primaryColor,
+                            cardColor,
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
                         ),
                       ),
                       alignment: Alignment.center,
-                      child: const Text(
-                        "PROCESSING",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
+                      child: const Text("Task Bar"),
+                    ),
+                    TextButton(
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (dialogContext) => TomorrowDatePicker(
+                          startDateTime: dateTime,
+                          onChanged: (dt) => setState(() => dateTime = dt),
+                        ),
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 10),
+                        alignment: Alignment.center,
+                        child: Text(
+                          dateTime == null
+                              ? "Date Picker"
+                              : DateFormat('d/M/y').format(dateTime!),
                         ),
                       ),
                     ),
-                  ),
-                ),
-                Container(
-                  height: buttonHeight,
-                  decoration: const BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.horizontal(
-                      right: Radius.circular(buttonCorner + 1),
-                    ),
-                  ),
-                  padding: const EdgeInsets.all(1),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: kVPadding / 2,
-                    ),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.horizontal(
-                        right: Radius.circular(buttonCorner),
+                    TextButton(
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (context) => const SearchResult()),
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 10),
+                        alignment: Alignment.center,
+                        child: const Text("Ticket Result Screen"),
                       ),
                     ),
-                    child: const Icon(
-                      Icons.arrow_drop_down,
-                      color: Colors.grey,
-                      size: 28,
+                    TextButton(
+                      onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => const TicketDashboard())),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 10),
+                        alignment: Alignment.center,
+                        child: const Text("Web Ticket Dashboard"),
+                      ),
                     ),
-                  ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            height: buttonHeight,
+                            decoration: const BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.horizontal(
+                                left: Radius.circular(buttonCorner + 1),
+                              ),
+                            ),
+                            padding: const EdgeInsets.only(
+                                left: 1, top: 1, bottom: 1),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: kHPadding,
+                              ),
+                              decoration: BoxDecoration(
+                                color: _status == 'PENDING'
+                                    ? Colors.grey
+                                    : _status == 'PROCESSING'
+                                        ? Colors.yellow
+                                        : _status == 'SUCCESS'
+                                            ? Colors.green
+                                            : _status == 'FAIL'
+                                                ? Colors.red
+                                                : scaffoldColor,
+                                borderRadius: const BorderRadius.horizontal(
+                                  left: Radius.circular(buttonCorner),
+                                ),
+                              ),
+                              alignment: Alignment.center,
+                              child: Text(
+                                _status,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(
+                              top: 1, right: 1, bottom: 1),
+                          decoration: const BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.horizontal(
+                                right: Radius.circular(buttonCorner + 1)),
+                          ),
+                          height: buttonHeight,
+                          child: Container(
+                            clipBehavior: Clip.antiAlias,
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.horizontal(
+                                  right: Radius.circular(buttonCorner)),
+                            ),
+                            child: PopupMenuButton<String>(
+                              elevation: 0,
+                              tooltip: 'Status',
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                    width: 1, color: Colors.grey),
+                                borderRadius:
+                                    BorderRadius.circular(buttonCorner),
+                              ),
+                              splashRadius: 1,
+                              initialValue: _status,
+                              onSelected: (String? value) =>
+                                  setState(() => _status = value!),
+                              padding: EdgeInsets.zero,
+                              // isExpanded: true,
+                              icon: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 5,
+                                ),
+                                child: Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.grey,
+                                  size: 28,
+                                ),
+                              ),
+                              color: Colors.transparent,
+                              itemBuilder: (context) => _statuses
+                                  .map<PopupMenuItem<String>>((String value) {
+                                final Color color = value == 'PENDING'
+                                    ? Colors.grey
+                                    : value == 'PROCESSING'
+                                        ? Colors.yellow
+                                        : value == 'SUCCESS'
+                                            ? Colors.green
+                                            : value == 'FAIL'
+                                                ? Colors.red
+                                                : scaffoldColor;
+                                return PopupMenuItem<String>(
+                                  value: value,
+                                  padding: EdgeInsets.zero,
+                                  child: ListTile(
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: kHPadding,
+                                    ),
+                                    tileColor: color,
+                                    title: Text(
+                                      value,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    // CircularPercentIndicator(radius: 100),
+                  ],
                 ),
-              ],
+              ),
             ),
-            const PieChartWidget(),
-            // CircularPercentIndicator(radius: 100),
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.only(
+                  left: kHPadding,
+                  right: kHPadding,
+                  bottom: kHPadding,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: kHPadding,
+                        vertical: kVPadding,
+                      ),
+                      decoration: const BoxDecoration(
+                        color: cardColor,
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(15),
+                        ),
+                        gradient: LinearGradient(
+                          colors: [
+                            primaryColor,
+                            cardColor,
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
+                      ),
+                      alignment: Alignment.center,
+                      child: const Text("Task Bar"),
+                    ),
+                    const PieChartWidget()
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

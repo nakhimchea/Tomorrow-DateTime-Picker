@@ -1,6 +1,10 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+const Color scaffoldColor = Color(0xFFF6F8FA);
+const Color cardColor = Colors.white;
+const Color primaryColor = Colors.orangeAccent;
+
 class PieChartWidget extends StatefulWidget {
   const PieChartWidget({Key? key}) : super(key: key);
 
@@ -79,7 +83,7 @@ class PieChart2State extends State {
     // debugPrint("$touchedIndex");
     return Container(
       height: 90 * 4,
-      color: Colors.black,
+      color: Colors.transparent,
       child: Row(
         children: [
           Expanded(
